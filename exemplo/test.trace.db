@@ -94,7 +94,7 @@ org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'' (USUARIO:
 INSERT INTO "PUBLIC"."USUARIO"("ID","LOGIN","NOME","SENHA")VALUES(?,?,?,?) [22018-214]
 2022-08-24 22:01:36 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "EMAIL" not found; SQL statement:
-select email, senha, guidusuario from usuario where email=? [42122-214]
+select email, senha, guidusuario from owner where email=? [42122-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
 	at org.h2.message.DbException.get(DbException.java:223)
@@ -179,7 +179,7 @@ select email, senha, guidusuario from usuario where email=? [42122-214]
 	at java.lang.Thread.run(Thread.java:748)
 2022-08-24 22:02:31 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "EMAIL" not found; SQL statement:
-select email, senha, guidusuario from usuario where email=? [42122-214]
+select email, senha, guidusuario from owner where email=? [42122-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
 	at org.h2.message.DbException.get(DbException.java:223)
