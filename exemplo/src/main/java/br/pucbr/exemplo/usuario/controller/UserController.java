@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/user")
 @SecurityScheme(
         name = "Bearer",
         type = SecuritySchemeType.HTTP,

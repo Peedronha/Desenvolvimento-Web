@@ -22,7 +22,7 @@ public class Vet {
     private String last_name;
 
     @ManyToMany
-    @JoinTable(name = "spec", joinColumns = @JoinColumn(name = "vet_id"),
+    @JoinTable(name = "specs", joinColumns = @JoinColumn(name = "vet_id"),
             inverseJoinColumns = @JoinColumn(name = "spec_id"))
     private Set<Spec> specs;
 

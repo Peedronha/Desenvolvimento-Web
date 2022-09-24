@@ -28,21 +28,20 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-/**
- * Mostly used as a facade for all Petclinic controllers
- * Also a placeholder for @Transactional and @Cacheable annotations
- *
- * @author Michael Isvy
- * @author Vitaliy Fedoriv
- */
 @Service
 public class ClinicService implements ClinicServiceRepository {
 
-    private PetRepository petRepository;
+    @Autowired
+	private PetRepository petRepository;
+	@Autowired
     private VetRepository vetRepository;
-    private OwnerRepository ownerRepository;
-    private VisitRepository visitRepository;
-    private SpecRepository specRepository;
+    @Autowired
+	private OwnerRepository ownerRepository;
+    @Autowired
+	private VisitRepository visitRepository;
+    @Autowired
+	private SpecRepository specRepository;
+	@Autowired
 	private PetTypeRepository petTypeRepository;
 
 	private final EntityManager em;
@@ -104,7 +103,7 @@ public class ClinicService implements ClinicServiceRepository {
 	@Override
 	@Transactional(readOnly = true)
 	public Vet findVetById(int id) throws DataAccessException {
-		Vet vet = null;
+		Vet vet;
 		try {
 			vet = vetRepository.findById(id).get();
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
@@ -139,8 +138,8 @@ public class ClinicService implements ClinicServiceRepository {
 
 	@Override
 	@Transactional
-	public void deleteOwner(Owner owner) throws DataAccessException {
-		ownerRepository.delete(owner);
+	public void deleteOwner(Integer id) throws DataAccessException {
+		ownerRepository.deleteById(id);
 	}
 
 	@Override

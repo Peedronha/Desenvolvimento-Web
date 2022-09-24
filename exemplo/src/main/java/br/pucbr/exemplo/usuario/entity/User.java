@@ -10,10 +10,13 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
     @Id
-    @Column(name = "username")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(name = "username", unique = true,nullable = false)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", unique = true, nullable = false)
     private String password;
 
     @Column(name = "enabled")
@@ -21,6 +24,14 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

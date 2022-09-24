@@ -17,6 +17,7 @@ package br.pucbr.exemplo.usuario.repository;
 
 import br.pucbr.exemplo.usuario.entity.*;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -50,10 +51,11 @@ public interface ClinicServiceRepository {
 	Owner findOwnerById(int id) throws DataAccessException;
 	List<Owner> findAllOwners() throws DataAccessException;
 	void saveOwner(Owner owner) throws DataAccessException;
-	void deleteOwner(Owner owner) throws DataAccessException;
+	void deleteOwner(Integer id) throws DataAccessException;
 	List<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
 
-	PetType findPetTypeById(int petTypeId);
+
+    PetType findPetTypeById(int petTypeId);
 	List<PetType> findAllPetTypes() throws DataAccessException;
 	Collection<PetType> findPetTypes() throws DataAccessException;
 	void savePetType(PetType petType) throws DataAccessException;

@@ -12,7 +12,7 @@ public class Spec {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Integer id;
 
-    @Column(name = "spec")
+    @Column(name = "name")
     @NotEmpty
     private String name;
 
