@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/exemplo/exemplo.iml" filepath="$PROJECT_DIR$/exemplo/exemplo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exemplo/PetClinic.iml" filepath="$PROJECT_DIR$/exemplo/PetClinic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PetClinic/exemplo.iml" filepath="$PROJECT_DIR$/PetClinic/exemplo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/pucdesenvweb2022.iml" filepath="$PROJECT_DIR$/.idea/pucdesenvweb2022.iml" />
     </modules>
   </component>
