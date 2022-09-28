@@ -22,6 +22,7 @@ public class User {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @Column(name = "Role")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -58,15 +59,11 @@ public class User {
     }
 
     public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        return this.roles;
     }
 
     @JsonIgnore
-    public void addRole(String roleName) {
+    public void setRoles(String roleName) {
         if(this.roles == null) {
             this.roles = new HashSet<>();
         }

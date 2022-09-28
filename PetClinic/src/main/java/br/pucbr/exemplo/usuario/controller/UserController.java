@@ -36,7 +36,7 @@ public class UserController {
         this.encoder = encoder;
     }
 
-    @PreAuthorize( "hasRole(@roles.ADMIN)" )
+    //@PreAuthorize( "hasRole(@roles.ADMIN)" )
     @PostMapping("/salvar")
     public ResponseEntity<?> save(@RequestBody User user) throws Excecao {
         HttpHeaders headers = new HttpHeaders();
@@ -45,13 +45,13 @@ public class UserController {
         return new ResponseEntity<>(user, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize( "hasRole(@roles.ADMIN)" )
+    //@PreAuthorize( "hasRole(@roles.ADMIN)" )
     @GetMapping
     public List<User> list() {
         return userService.list();
     }
 
-    @PreAuthorize( "hasRole(@roles.ADMIN)" )
+    //@PreAuthorize( "hasRole(@roles.ADMIN)" )
     @GetMapping("/{id}")
     public ResponseEntity<User> searchById(@PathVariable("id") Integer id) {
         try {
@@ -61,7 +61,7 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    @PreAuthorize( "hasRole(@roles.ADMIN)" )
+    //@PreAuthorize( "hasRole(@roles.ADMIN)" )
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Integer id) {
         userService.delete(id);

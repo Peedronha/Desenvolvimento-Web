@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 @RestController
-@RequestMapping("public/owner")
+@RequestMapping("api/owner")
 public class OwnerController {
     @Autowired
     ClinicService clinicService;
@@ -26,6 +26,10 @@ public class OwnerController {
         catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }@GetMapping
+    public ResponseEntity<List<Owner>> listAll() {
+       List<Owner> owners = clinicService.findAllOwners();
+        return new ResponseEntity<>(owners, HttpStatus.OK);
     }
 
     @GetMapping("/{lastName}")

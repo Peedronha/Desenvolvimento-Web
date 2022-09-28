@@ -39,7 +39,7 @@ public class VisitController{
     @Autowired
     ClinicService clinicService;
 
-    @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping
     public ResponseEntity<List<Visit>> listVisits() {
         List<Visit> visits = new ArrayList<>(this.clinicService.findAllVisits());
@@ -49,7 +49,7 @@ public class VisitController{
         return new ResponseEntity<>(new ArrayList<> (visits), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping("/{id}")
     public ResponseEntity<Visit> getVisit( @PathVariable("id") Integer visitId) {
         Visit visit = this.clinicService.findVisitById(visitId);
@@ -59,7 +59,7 @@ public class VisitController{
         return new ResponseEntity<>(visit, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @PostMapping
     public ResponseEntity<Visit> addVisit(@RequestBody Visit visit) {
         HttpHeaders headers = new HttpHeaders();
@@ -68,7 +68,7 @@ public class VisitController{
         return new ResponseEntity<>(visit, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @PostMapping("/{id}")
     public ResponseEntity<Visit> updateVisit(@PathVariable("id") Integer id, @RequestBody Visit visit) {
         Visit currentVisit = this.clinicService.findVisitById(id);
@@ -76,19 +76,19 @@ public class VisitController{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         this.clinicService.saveVisit(currentVisit);
-        return new ResponseEntity<>(currentVisit, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(currentVisit, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Visit> deleteVisit(@PathVariable("id") Integer visitId) {
         Visit visit = this.clinicService.findVisitById(visitId);
         if (visit == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         this.clinicService.deleteVisit(visit);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

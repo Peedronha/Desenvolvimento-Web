@@ -40,7 +40,7 @@ public class SpecController  {
     @Autowired
     ClinicService clinicService;
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @GetMapping
     public ResponseEntity<List<Spec>> listSpec() {
         List<Spec> specialties = new ArrayList<>();
@@ -51,7 +51,7 @@ public class SpecController  {
         return new ResponseEntity<>(specialties, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @GetMapping("/{id}")
     public ResponseEntity<Spec> getSpecialty(@PathVariable("id") Integer specialtyId) {
         Spec specialty = this.clinicService.findSpecialtyById(specialtyId);
@@ -61,7 +61,7 @@ public class SpecController  {
         return new ResponseEntity<Spec>(specialty, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping
     public ResponseEntity<Spec> addSpecialty(@RequestBody Spec spec) {
         HttpHeaders headers = new HttpHeaders();
@@ -70,7 +70,7 @@ public class SpecController  {
         return new ResponseEntity<Spec>(spec, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping("/{id}")
     public ResponseEntity<Spec> updateSpecialty(@PathVariable("id") Integer specId) {
         Spec currentSpec = this.clinicService.findSpecialtyById(specId);
@@ -82,7 +82,7 @@ public class SpecController  {
         return new ResponseEntity<>(currentSpec, HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Spec> deleteSpecialty(@PathVariable("id") Integer specId) {

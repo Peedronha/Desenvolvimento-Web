@@ -16,6 +16,7 @@
 
 package br.pucbr.exemplo.usuario.controller;
 
+import br.pucbr.exemplo.usuario.entity.Pet;
 import br.pucbr.exemplo.usuario.entity.PetType;
 import br.pucbr.exemplo.usuario.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,47 +40,49 @@ public class PetTypeController {
     ClinicService clinicService;
 
 
-    @PreAuthorize("hasAnyRole(@roles.OWNER_ADMIN, @roles.VET_ADMIN)")
+    //@PreAuthorize("hasAnyRole(@roles.OWNER_ADMIN, @roles.VET_ADMIN)")
     @GetMapping
     public ResponseEntity<List<PetType>> listPetTypes() {
         List<PetType> petTypes = new ArrayList<>(this.clinicService.findAllPetTypes());
         if (petTypes.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null,HttpStatus.OK);
         }
         return new ResponseEntity<>(petTypes, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole(@roles.OWNER_ADMIN, @roles.VET_ADMIN)")
+    //@PreAuthorize("hasAnyRole(@roles.OWNER_ADMIN, @roles.VET_ADMIN)")
     @GetMapping("/{id}")
     public ResponseEntity<PetType> getPetType(@PathVariable("id") Integer petTypeId) {
         PetType petType = this.clinicService.findPetTypeById(petTypeId);
         if (petType == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null,HttpStatus.OK);
         }
         return new ResponseEntity<>(petType, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping
     public ResponseEntity<PetType> addPetType(@RequestBody PetType type) {
         HttpHeaders headers = new HttpHeaders();
         this.clinicService.savePetType(type);
-        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/pettypes/{id}").buildAndExpand(type.getId()).toUri());
+        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/petTypes/{id}").buildAndExpand(type.getId()).toUri());
         return new ResponseEntity<>(type, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping("/{id}")
-    public ResponseEntity<PetType> updatePetType(@PathVariable("id") Integer petTypeId) {
+    public ResponseEntity<PetType> updatePetType(@RequestBody PetType type, @PathVariable("id") Integer petTypeId) {
         PetType currentPetType = this.clinicService.findPetTypeById(petTypeId);
         if (currentPetType == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null,HttpStatus.OK);
         }
-        this.clinicService.savePetType(currentPetType);
-        return new ResponseEntity<>(currentPetType, HttpStatus.NO_CONTENT);
+        else {
+            this.clinicService.updatePetType(type, petTypeId);
+            return new ResponseEntity<>(type, HttpStatus.OK);
+        }
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<PetType> deletePetType(@PathVariable("id") Integer petTypeId) {

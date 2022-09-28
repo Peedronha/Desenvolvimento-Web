@@ -40,7 +40,7 @@ public class VetController{
     @Autowired
     ClinicService clinicService;
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @GetMapping
     public ResponseEntity<List<Vet>> listVets() {
         List<Vet> vets = new ArrayList<>();
@@ -51,7 +51,7 @@ public class VetController{
         return new ResponseEntity<>(vets, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @GetMapping("1/{id}")
     public ResponseEntity<Vet> getVet(@PathVariable("id") Integer vetId)  {
         Vet vet = this.clinicService.findVetById(vetId);
@@ -61,7 +61,7 @@ public class VetController{
         return new ResponseEntity<>(vet, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping("/{id}")
     public ResponseEntity<Vet> addVet(@PathVariable("id") Vet vet) {
         HttpHeaders headers = new HttpHeaders();
@@ -70,7 +70,7 @@ public class VetController{
         return new ResponseEntity<>(vet, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping
     public ResponseEntity<Vet> updateVet(@RequestBody Vet vet)  {
         Vet currentVet = this.clinicService.findVetById(vet.getId());
@@ -87,7 +87,7 @@ public class VetController{
         return new ResponseEntity<>(currentVet, HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Vet> deleteVet(@PathVariable("id") Integer vetId) {

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -274,5 +275,10 @@ public class ClinicService implements ClinicServiceRepository {
 				.setParameter("id", petId)
 				.getResultList();
 	}
-
+	@Transactional
+	public void updatePetType(PetType newPetType, Integer petTypeId) {
+	em.createQuery("update PetType p set p.name = :name where p.id = :id")
+			.setParameter("name",newPetType.getName())
+			.setParameter("id",petTypeId).executeUpdate();
+	}
 }

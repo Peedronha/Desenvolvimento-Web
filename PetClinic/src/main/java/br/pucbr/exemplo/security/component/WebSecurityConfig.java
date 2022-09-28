@@ -34,8 +34,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable().authorizeRequests()
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/user").permitAll()
+                .antMatchers(HttpMethod.POST).permitAll()
                 .anyRequest().authenticated().and()
 
                 // filtra requisições de login
@@ -44,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        /*httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();*/
+        httpSecurity.csrf().disable();
+        httpSecurity.headers().frameOptions().disable();
     }
 
     @Override
