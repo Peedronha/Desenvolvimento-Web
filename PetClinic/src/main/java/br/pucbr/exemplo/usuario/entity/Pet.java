@@ -29,13 +29,13 @@ public class Pet{
         private Owner owner;
 
         @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
-        private Set<Visit> visits;
+        private Set<Appointment> appointments;
 
-        public Integer getPet_Id() {
+        public Integer getPet_ID() {
             return id;
         }
 
-        public void setPet_Id(Integer id) {
+        public void setPet_ID(Integer id) {
             this.id = id;
         }
 
@@ -71,14 +71,14 @@ public class Pet{
             this.owner = owner;
         }
 
-        public Set<Visit> getVisits() {
-            return visits;
+        public Set<Appointment> getAppointments() {
+            return appointments;
         }
 
-        public Set<Visit> setVisits(Set<Visit> visits) {
-            if (this.visits == null) {
-                this.visits = new HashSet<Visit>();
+        public Set<Appointment> setAppointment(Set<Appointment> appointments) {
+            if (this.appointments == null) {
+                this.appointments = new HashSet<Appointment>();
             }
-            return this.visits;
+            return this.appointments;
         }
 }

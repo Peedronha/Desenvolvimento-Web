@@ -16,7 +16,9 @@ import java.util.NoSuchElementException;
 public class OwnerController {
     @Autowired
     ClinicService clinicService;
-    
+
+
+
     @PostMapping
     public ResponseEntity<Owner> save(@RequestBody Owner owner) throws Excecao {
         try {
@@ -26,7 +28,8 @@ public class OwnerController {
         catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-    }@GetMapping
+    }
+    @GetMapping
     public ResponseEntity<List<Owner>> listAll() {
        List<Owner> owners = clinicService.findAllOwners();
         return new ResponseEntity<>(owners, HttpStatus.OK);

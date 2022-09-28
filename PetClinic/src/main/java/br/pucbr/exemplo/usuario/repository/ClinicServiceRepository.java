@@ -17,7 +17,6 @@ package br.pucbr.exemplo.usuario.repository;
 
 import br.pucbr.exemplo.usuario.entity.*;
 import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,11 +28,11 @@ public interface ClinicServiceRepository {
 	void savePet(Pet pet) throws DataAccessException;
 	void deletePet(Pet pet) throws DataAccessException;
 
-	List<Visit> findVisitsByPetId(int petId);
-	Visit findVisitById(int visitId) throws DataAccessException;
-	List<Visit> findAllVisits() throws DataAccessException;
-	void saveVisit(Visit visit) throws DataAccessException;
-	void deleteVisit(Visit visit) throws DataAccessException;
+	List<Appointment> findVisitsByPetId(int petId);
+	Appointment findVisitById(int visitId) throws DataAccessException;
+	List<Appointment> findAllVisits() throws DataAccessException;
+	void saveVisit(Appointment appointment) throws DataAccessException;
+	void deleteVisit(Appointment appointment) throws DataAccessException;
 
 	Vet findVetById(int id) throws DataAccessException;
 	Collection<Vet> findVets() throws DataAccessException;

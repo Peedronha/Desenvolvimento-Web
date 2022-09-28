@@ -1,21 +1,23 @@
 package br.pucbr.exemplo.usuario.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "Visit")
-public class Visit {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Integer id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "visit_date", columnDefinition = "DATE")
     private LocalDate date;
 
-    @NotEmpty
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
     @ManyToOne

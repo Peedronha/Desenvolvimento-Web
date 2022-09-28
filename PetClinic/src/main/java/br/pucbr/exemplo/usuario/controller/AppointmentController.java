@@ -16,14 +16,13 @@
 
 package br.pucbr.exemplo.usuario.controller;
 
-import br.pucbr.exemplo.usuario.entity.Visit;
+import br.pucbr.exemplo.usuario.entity.Appointment;
 import br.pucbr.exemplo.usuario.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -34,60 +33,60 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("api/visit")
-public class VisitController{
+@RequestMapping("api/appointment")
+public class AppointmentController {
     @Autowired
     ClinicService clinicService;
 
     //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping
-    public ResponseEntity<List<Visit>> listVisits() {
-        List<Visit> visits = new ArrayList<>(this.clinicService.findAllVisits());
-        if (visits.isEmpty()) {
+    public ResponseEntity<List<Appointment>> listVisits() {
+        List<Appointment> appointments = new ArrayList<>(this.clinicService.findAllVisits());
+        if (appointments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new ArrayList<> (visits), HttpStatus.OK);
+        return new ResponseEntity<>(new ArrayList<> (appointments), HttpStatus.OK);
     }
 
     //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping("/{id}")
-    public ResponseEntity<Visit> getVisit( @PathVariable("id") Integer visitId) {
-        Visit visit = this.clinicService.findVisitById(visitId);
-        if (visit == null) {
+    public ResponseEntity<Appointment> getVisit(@PathVariable("id") Integer visitId) {
+        Appointment appointment = this.clinicService.findVisitById(visitId);
+        if (appointment == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(visit, HttpStatus.OK);
+        return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 
     //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @PostMapping
-    public ResponseEntity<Visit> addVisit(@RequestBody Visit visit) {
+    public ResponseEntity<Appointment> addVisit(@RequestBody Appointment appointment) {
         HttpHeaders headers = new HttpHeaders();
-        this.clinicService.saveVisit(visit);
-        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/visits/{id}").buildAndExpand(visit.getId()).toUri());
-        return new ResponseEntity<>(visit, headers, HttpStatus.CREATED);
+        this.clinicService.saveVisit(appointment);
+        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/visits/{id}").buildAndExpand(appointment.getId()).toUri());
+        return new ResponseEntity<>(appointment, headers, HttpStatus.CREATED);
     }
 
     //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @PostMapping("/{id}")
-    public ResponseEntity<Visit> updateVisit(@PathVariable("id") Integer id, @RequestBody Visit visit) {
-        Visit currentVisit = this.clinicService.findVisitById(id);
-        if (currentVisit == null) {
+    public ResponseEntity<Appointment> updateVisit(@PathVariable("id") Integer id, @RequestBody Appointment appointment) {
+        Appointment currentAppointment = this.clinicService.findVisitById(id);
+        if (currentAppointment == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        this.clinicService.saveVisit(currentVisit);
-        return new ResponseEntity<>(currentVisit, HttpStatus.OK);
+        this.clinicService.saveVisit(currentAppointment);
+        return new ResponseEntity<>(currentAppointment, HttpStatus.OK);
     }
 
     //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity<Visit> deleteVisit(@PathVariable("id") Integer visitId) {
-        Visit visit = this.clinicService.findVisitById(visitId);
-        if (visit == null) {
+    public ResponseEntity<Appointment> deleteVisit(@PathVariable("id") Integer visitId) {
+        Appointment appointment = this.clinicService.findVisitById(visitId);
+        if (appointment == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        this.clinicService.deleteVisit(visit);
+        this.clinicService.deleteVisit(appointment);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -2,11 +2,11 @@
 package br.pucbr.exemplo.usuario.controller;
 
 import br.pucbr.exemplo.usuario.entity.Pet;
+import br.pucbr.exemplo.usuario.entity.Appointment;
 import br.pucbr.exemplo.usuario.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -37,9 +37,6 @@ public class PetController {
     @GetMapping
     public ResponseEntity<List<Pet>> listPets() {
         List<Pet> pets = new ArrayList<>(this.clinicService.findAllPets());
-        if (pets.isEmpty()) {
-            return new ResponseEntity<>(pets,HttpStatus.OK);
-        }
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
@@ -64,7 +61,15 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-
+    @GetMapping("/{pet_id}")
+    public ResponseEntity<List<Appointment>> visitByPet(@PathVariable("pet_id") Integer petId){
+        List<Appointment> appointment = new ArrayList<>(this.clinicService.findVisitsByPetId(petId));
+        Pet pet = this.clinicService.findPetById(petId);
+        if(appointment.isEmpty() || pet == null){
+            return new ResponseEntity<>(appointment,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(appointment,HttpStatus.OK);
+    }
     //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")

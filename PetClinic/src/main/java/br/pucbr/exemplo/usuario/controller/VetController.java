@@ -15,7 +15,6 @@
  */
 package br.pucbr.exemplo.usuario.controller;
 
-import br.pucbr.exemplo.usuario.entity.PetType;
 import br.pucbr.exemplo.usuario.entity.Spec;
 import br.pucbr.exemplo.usuario.entity.Vet;
 import br.pucbr.exemplo.usuario.service.ClinicService;
@@ -23,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -46,13 +43,13 @@ public class VetController{
         List<Vet> vets = new ArrayList<>();
         vets.addAll(this.clinicService.findAllVets());
         if (vets.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(vets, HttpStatus.OK);
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
-    @GetMapping("1/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Vet> getVet(@PathVariable("id") Integer vetId)  {
         Vet vet = this.clinicService.findVetById(vetId);
         if (vet == null) {
@@ -62,8 +59,8 @@ public class VetController{
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
-    @PostMapping("/{id}")
-    public ResponseEntity<Vet> addVet(@PathVariable("id") Vet vet) {
+    @PostMapping
+    public ResponseEntity<Vet> saveVet(@RequestBody Vet vet) {
         HttpHeaders headers = new HttpHeaders();
         this.clinicService.saveVet(vet);
         headers.setLocation(UriComponentsBuilder.newInstance().path("/api/vets/{id}").buildAndExpand(vet.getId()).toUri());
@@ -71,7 +68,7 @@ public class VetController{
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
-    @PostMapping
+    @PutMapping
     public ResponseEntity<Vet> updateVet(@RequestBody Vet vet)  {
         Vet currentVet = this.clinicService.findVetById(vet.getId());
         if (currentVet == null) {
@@ -80,8 +77,8 @@ public class VetController{
         currentVet.setFirst_name(vet.getFirst_name());
         currentVet.setLast_name(vet.getLast_name());
         currentVet.clearSpecialties();
-        for (Spec spec : vet.getSpecs()) {
-            currentVet.addSpec(spec);
+        for (Spec spec : vet.getSpecialties()) {
+            currentVet.addSpecialty(spec);
         }
         this.clinicService.saveVet(currentVet);
         return new ResponseEntity<>(currentVet, HttpStatus.NO_CONTENT);

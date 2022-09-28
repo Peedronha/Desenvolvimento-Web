@@ -56,39 +56,40 @@ public class Vet {
         this.last_name = last_name;
     }
 
-    protected Set<Spec> getSpecsInternal() {
+    @JsonIgnore
+    protected Set<Spec> getSpecialtiesInternal() {
         if (this.specs == null) {
             this.specs = new HashSet<>();
         }
         return this.specs;
     }
 
-    protected void setSpecsInternal(Set<Spec> specialties) {
+    protected void setSpecialtiesInternal(Set<Spec> specialties) {
         this.specs = specialties;
     }
 
     @XmlElement
-    public List<Spec> getSpecs() {
-        List<Spec> sortedSpecs = new ArrayList<>(getSpecsInternal());
+    public List<Spec> getSpecialties() {
+        List<Spec> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
         PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedSpecs);
     }
 
-    public void setSpecs(List<Spec> specialties) {
+    public void setSpecialties(List<Spec> specialties) {
         this.specs = new HashSet<>(specialties);
     }
 
     @JsonIgnore
-    public int getNrOfSpecs() {
-        return getSpecsInternal().size();
+    public int getNrOfSpecialties() {
+        return getSpecialtiesInternal().size();
     }
 
-    public void addSpec(Spec spec) {
-        getSpecsInternal().add(spec);
+    public void addSpecialty(Spec spec) {
+        getSpecialtiesInternal().add(spec);
     }
 
     public void clearSpecialties() {
-        getSpecsInternal().clear();
+        getSpecialtiesInternal().clear();
     }
 
 

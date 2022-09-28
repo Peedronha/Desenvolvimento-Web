@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class ClinicService implements ClinicServiceRepository {
     @Autowired
 	private OwnerRepository ownerRepository;
     @Autowired
-	private VisitRepository visitRepository;
+	private AppointmentRepository appointmentRepository;
     @Autowired
 	private SpecRepository specRepository;
 	@Autowired
@@ -52,14 +51,14 @@ public class ClinicService implements ClinicServiceRepository {
        		 PetRepository petRepository,
     		 VetRepository vetRepository,
     		 OwnerRepository ownerRepository,
-    		 VisitRepository visitRepository,
+    		 AppointmentRepository appointmentRepository,
     		 SpecRepository specRepository,
 			 PetTypeRepository petTypeRepository,
 			 EntityManager em) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
         this.ownerRepository = ownerRepository;
-        this.visitRepository = visitRepository;
+        this.appointmentRepository = appointmentRepository;
         this.specRepository = specRepository;
 		this.petTypeRepository = petTypeRepository;
 		this.em = em;
@@ -79,26 +78,26 @@ public class ClinicService implements ClinicServiceRepository {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Visit findVisitById(int visitId) throws DataAccessException {
-		Visit visit;
+	public Appointment findVisitById(int visitId) throws DataAccessException {
+		Appointment appointment;
 		try {
-			visit = visitRepository.findById(visitId).get();
+			appointment = appointmentRepository.findById(visitId).get();
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
 			return null;
 		}
-		return visit;
+		return appointment;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Visit> findAllVisits() throws DataAccessException {
-		return visitRepository.findAll();
+	public List<Appointment> findAllVisits() throws DataAccessException {
+		return appointmentRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void deleteVisit(Visit visit) throws DataAccessException {
-		visitRepository.delete(visit);
+	public void deleteVisit(Appointment appointment) throws DataAccessException {
+		appointmentRepository.delete(appointment);
 	}
 
 	@Override
@@ -242,8 +241,8 @@ public class ClinicService implements ClinicServiceRepository {
 
 	@Override
 	@Transactional
-	public void saveVisit(Visit visit) throws DataAccessException {
-		visitRepository.save(visit);
+	public void saveVisit(Appointment appointment) throws DataAccessException {
+		appointmentRepository.save(appointment);
 	}
 
 	@Override
@@ -252,6 +251,7 @@ public class ClinicService implements ClinicServiceRepository {
 	public List<Vet> findVets() throws DataAccessException {
 		return vetRepository.findAll();
 	}
+
 
 	@Override
 	@Transactional
@@ -271,7 +271,7 @@ public class ClinicService implements ClinicServiceRepository {
 	@Transactional(readOnly = true)
 	public List findVisitsByPetId(int petId) {
 
-		return em.createQuery("SELECT v FROM Visit v where v.pet.id= :id")
+		return em.createQuery("SELECT v FROM Appointment v where v.pet.id= :id")
 				.setParameter("id", petId)
 				.getResultList();
 	}
@@ -281,4 +281,6 @@ public class ClinicService implements ClinicServiceRepository {
 			.setParameter("name",newPetType.getName())
 			.setParameter("id",petTypeId).executeUpdate();
 	}
+
+
 }

@@ -48,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();
+        /*httpSecurity.csrf().disable();
+        httpSecurity.headers().frameOptions().disable();*/
     }
 
     @Override
