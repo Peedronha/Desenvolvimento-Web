@@ -26,6 +26,38 @@ public class PetClinicApplication {
 		Tem dois serviços que eu criei, um para usuário e outro que faz clinica funcionar
 
 		a unica coisa que eu não fiz nessa versão do código é a inserção em tabelas que possuem uma chave estrangeira e são uma lista.
+* 
+* https://www.baeldung.com/http-put-patch-difference-spring
+* https://www.baeldung.com/exception-handling-for-rest-with-spring
+* https://www.baeldung.com/spring-response-entity
+* 
+* 
+* @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
+   public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product) { 
+   
+   Pet currentpet = this.clinicrepository.findById(id);
+      if(currentpet == null)throw new ProductNotfoundException();
+      else{
+      	this.currentpet.deletePet(id);
+      }
+      productRepo.remove(id);
+      product.setId(id);
+      productRepo.put(id, product);
+      return new ResponseEntity<>("Product is updated successfully", HttpStatus.OK);
+      
+      @PutMapping("/heavyresource/{id}")
+public ResponseEntity<?> saveResource(@RequestBody HeavyResource heavyResource,
+  @PathVariable("id") String id) {
+    heavyResourceRepository.save(heavyResource, id);
+    return ResponseEntity.ok("resource saved");
+}
+      
+      
+   }
+* 
+* 
+* 
+* 
 * */
 
 }
