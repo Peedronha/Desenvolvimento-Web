@@ -20,28 +20,30 @@ public class Pet{
         @Column(name = "birth_date", columnDefinition = "DATE")
         private LocalDate birthDate;
 
-        @ManyToOne
-        @JoinColumn(name = "type_id")
-        private PetType type;
+        @Column(name ="PetType")
+        private String type;
+        @Column(name = "owner_id")
+        private Integer owner_id;
 
-        @ManyToOne
-        @JoinColumn(name = "owner_id", nullable = false)
-        private Owner owner;
+    public Integer getId() {
+        return id;
+    }
 
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
-        private Set<Appointment> appointments;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-        public Integer getPet_ID() {
-            return id;
-        }
-
-        public void setPet_ID(Integer id) {
-            this.id = id;
-        }
-
-        public String getName() {
+    public String getName() {
                 return name;
             }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public void setName(String name) {
             this.name = name;
@@ -55,30 +57,13 @@ public class Pet{
             this.birthDate = birthDate;
         }
 
-        public PetType getType() {
-            return type;
+
+        public Integer getOwner_id() {
+            return owner_id;
         }
 
-        public void setType(PetType type) {
-            this.type = type;
+        public void setOwner_id(Integer owner_id) {
+            this.owner_id = owner_id;
         }
 
-        public Owner getOwner() {
-            return owner;
-        }
-
-        public void setOwner(Owner owner) {
-            this.owner = owner;
-        }
-
-        public Set<Appointment> getAppointments() {
-            return appointments;
-        }
-
-        public Set<Appointment> setAppointment(Set<Appointment> appointments) {
-            if (this.appointments == null) {
-                this.appointments = new HashSet<Appointment>();
-            }
-            return this.appointments;
-        }
 }

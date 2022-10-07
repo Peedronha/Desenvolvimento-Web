@@ -32,13 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable().authorizeRequests()
-                .antMatchers("/public/**").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/public/**","/","/h2-console","/login","/api/**").permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/user").permitAll()
                 .antMatchers(HttpMethod.POST).permitAll()
                 .anyRequest().authenticated().and()
 
@@ -48,9 +43,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        /*httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();*/
+        httpSecurity.csrf().disable();
+        httpSecurity.headers().frameOptions().disable();
     }
+
+
+    /*@Override
+    protected void configure(final HttpSecurity http) throws Exception {
+        http
+                // ...
+                .and()
+                .formLogin()
+                .loginPage("/login.html")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/homepage.html", true)
+                .failureUrl("/login.html?error=true")
+                .failureHandler(authenticationFailureHandler())
+                .and()
+                .logout()
+                .logoutUrl("/perform_logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(logoutSuccessHandler());
+    }*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

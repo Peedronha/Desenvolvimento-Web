@@ -1,10 +1,7 @@
 package br.pucbr.exemplo.usuario.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "Visit")
@@ -15,14 +12,13 @@ public class Appointment {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "visit_date", columnDefinition = "DATE")
-    private LocalDate date;
+    private Date date;
 
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @Column(name = "pet_id")
+    private Integer pet;
 
     public Integer getId() {
         return id;
@@ -32,11 +28,11 @@ public class Appointment {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -48,11 +44,11 @@ public class Appointment {
         this.description = description;
     }
 
-    public Pet getPet() {
+    public Integer getPet() {
         return pet;
     }
 
-    public void setPet(Pet pet) {
+    public void setPet(Integer pet) {
         this.pet = pet;
     }
 }

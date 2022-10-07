@@ -5,10 +5,10 @@ import br.pucbr.exemplo.usuario.entity.User;
 import br.pucbr.exemplo.usuario.repository.UserRepository;
 import br.pucbr.exemplo.util.excecao.Excecao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,19 +20,17 @@ public class UserService {
 
     EntityManager em;
 
-    public User save(User user) throws Excecao {
+    public User save(User user)  throws DataAccessException {
         if (user.getUsername().equals("") || user.getUsername().length() > 300) {
-            throw new Excecao("ERR001","O dados dos usuário estão incorretos.");
         }
-
-        /*for (Role r:user.getRoles()) {
+        for (Role r:user.getRoles()) {
             if (!r.getName().startsWith("ROLE_")){
                 r.setName("ROLE_" + r.getName());
             }
             if (r.getUser() == null){
                 r.setUser(user);
             }
-        }*/
+        }
 
         return userRepository.save(user);
     }

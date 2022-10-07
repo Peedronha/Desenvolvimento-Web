@@ -3,6 +3,7 @@ package br.pucbr.exemplo.usuario.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,9 +34,6 @@ public class Owner {
     @NotEmpty
     @Digits(fraction = 0, integer = 10)
     private String telephone;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Pet> pets;
 
 
     public Integer getId() {
@@ -86,11 +84,4 @@ public class Owner {
         this.telephone = telephone;
     }
 
-    public Set<Pet> getPets() {
-        return pets;
-    }
-
-    public void setPets(Set<Pet> pets) {
-        this.pets = pets;
-    }
 }

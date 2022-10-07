@@ -15,9 +15,10 @@
  */
 package br.pucbr.exemplo.usuario.controller;
 
-import br.pucbr.exemplo.usuario.entity.Spec;
 import br.pucbr.exemplo.usuario.entity.Vet;
 import br.pucbr.exemplo.usuario.service.ClinicService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,11 @@ import java.util.List;
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/vet")
+@SecurityScheme(
+        name = "Bearer",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer"
+)
 public class VetController{
     @Autowired
     ClinicService clinicService;
@@ -76,10 +82,7 @@ public class VetController{
         }
         currentVet.setFirst_name(vet.getFirst_name());
         currentVet.setLast_name(vet.getLast_name());
-        currentVet.clearSpecialties();
-        for (Spec spec : vet.getSpecialties()) {
-            currentVet.addSpecialty(spec);
-        }
+        currentVet.setSpec(vet.getSpec());
         this.clinicService.saveVet(currentVet);
         return new ResponseEntity<>(currentVet, HttpStatus.NO_CONTENT);
     }
