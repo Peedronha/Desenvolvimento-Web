@@ -39,6 +39,11 @@ public class ClinicService implements ClinicServiceRepository {
 	private OwnerRepository ownerRepository;
     @Autowired
 	private AppointmentRepository appointmentRepository;
+    @Autowired
+	private SpecRepository specRepository;
+	@Autowired
+	private PetTypeRepository petTypeRepository;
+
 	private final EntityManager em;
 
     @Autowired
@@ -47,11 +52,15 @@ public class ClinicService implements ClinicServiceRepository {
     		 VetRepository vetRepository,
     		 OwnerRepository ownerRepository,
     		 AppointmentRepository appointmentRepository,
+    		 SpecRepository specRepository,
+			 PetTypeRepository petTypeRepository,
 			 EntityManager em) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
         this.ownerRepository = ownerRepository;
         this.appointmentRepository = appointmentRepository;
+        this.specRepository = specRepository;
+		this.petTypeRepository = petTypeRepository;
 		this.em = em;
     }
 
@@ -135,6 +144,72 @@ public class ClinicService implements ClinicServiceRepository {
 
 	@Override
 	@Transactional(readOnly = true)
+	public PetType findPetTypeById(int petTypeId) {
+		PetType petType = null;
+		try {
+			petType = petTypeRepository.findById(petTypeId).get();
+		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+			return null;
+		}
+		return petType;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<PetType> findAllPetTypes() throws DataAccessException {
+		return petTypeRepository.findAll();
+	}
+
+	@Override
+	@Transactional
+	public void savePetType(PetType petType) throws DataAccessException{
+		petTypeRepository.save(petType);
+	}
+
+	@Override
+	@Transactional
+	public void deletePetType(PetType petType) throws DataAccessException {
+		petTypeRepository.delete(petType);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Spec findSpecialtyById(int specialtyId) {
+		Spec specialty = null;
+		try {
+			specialty = specRepository.findById(specialtyId).get();
+		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+			return null;
+		}
+		return specialty;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Spec> findAllSpecialties() throws DataAccessException {
+		return specRepository.findAll();
+	}
+
+	@Override
+	@Transactional
+	public void saveSpecialty(Spec specialty) throws DataAccessException {
+		specRepository.save(specialty);
+	}
+
+	@Override
+	@Transactional
+	public void deleteSpecialty(Spec specialty) throws DataAccessException {
+		specRepository.delete(specialty);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<PetType> findPetTypes() throws DataAccessException {
+		return petTypeRepository.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public Owner findOwnerById(int id) throws DataAccessException {
 		Owner owner = null;
 		try {
@@ -200,5 +275,12 @@ public class ClinicService implements ClinicServiceRepository {
 				.setParameter("id", petId)
 				.getResultList();
 	}
+	@Transactional
+	public void updatePetType(PetType newPetType, Integer petTypeId) {
+	em.createQuery("update PetType p set p.name = :name where p.id = :id")
+			.setParameter("name",newPetType.getName())
+			.setParameter("id",petTypeId).executeUpdate();
+	}
+
 
 }

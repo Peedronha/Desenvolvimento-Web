@@ -27,8 +27,10 @@ public class Vet {
     @NotEmpty
     private String last_name;
 
-    @Column(name ="Speciality")
-    private String spec;
+    @ManyToMany
+    @JoinTable(name = "specs", joinColumns = @JoinColumn(name = "vet_id"),
+            inverseJoinColumns = @JoinColumn(name = "spec_id"))
+    private Set<Spec> specs;
 
     public Integer getId() {
         return id;
@@ -54,11 +56,41 @@ public class Vet {
         this.last_name = last_name;
     }
 
-    public String getSpec() {
-        return spec;
+    @JsonIgnore
+    protected Set<Spec> getSpecialtiesInternal() {
+        if (this.specs == null) {
+            this.specs = new HashSet<>();
+        }
+        return this.specs;
     }
 
-    public void setSpec(String spec) {
-        this.spec = spec;
+    protected void setSpecialtiesInternal(Set<Spec> specialties) {
+        this.specs = specialties;
     }
+
+    @XmlElement
+    public List<Spec> getSpecialties() {
+        List<Spec> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+        PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
+        return Collections.unmodifiableList(sortedSpecs);
+    }
+
+    public void setSpecialties(List<Spec> specialties) {
+        this.specs = new HashSet<>(specialties);
+    }
+
+    @JsonIgnore
+    public int getNrOfSpecialties() {
+        return getSpecialtiesInternal().size();
+    }
+
+    public void addSpecialty(Spec spec) {
+        getSpecialtiesInternal().add(spec);
+    }
+
+    public void clearSpecialties() {
+        getSpecialtiesInternal().clear();
+    }
+
+
 }

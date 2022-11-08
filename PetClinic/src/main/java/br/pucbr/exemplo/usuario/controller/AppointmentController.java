@@ -18,8 +18,6 @@ package br.pucbr.exemplo.usuario.controller;
 
 import br.pucbr.exemplo.usuario.entity.Appointment;
 import br.pucbr.exemplo.usuario.service.ClinicService;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,11 +34,6 @@ import java.util.List;
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/appointment")
-@SecurityScheme(
-        name = "Bearer",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer"
-)
 public class AppointmentController {
     @Autowired
     ClinicService clinicService;
@@ -50,7 +43,7 @@ public class AppointmentController {
     public ResponseEntity<List<Appointment>> listVisits() {
         List<Appointment> appointments = new ArrayList<>(this.clinicService.findAllVisits());
         if (appointments.isEmpty()) {
-            return new ResponseEntity<>(appointments,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new ArrayList<> (appointments), HttpStatus.OK);
     }
@@ -96,4 +89,5 @@ public class AppointmentController {
         this.clinicService.deleteVisit(appointment);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

@@ -4,8 +4,6 @@ package br.pucbr.exemplo.usuario.controller;
 import br.pucbr.exemplo.usuario.entity.Pet;
 import br.pucbr.exemplo.usuario.entity.Appointment;
 import br.pucbr.exemplo.usuario.service.ClinicService;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +17,6 @@ import java.util.NoSuchElementException;
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/pet")
-@SecurityScheme(
-        name = "Bearer",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer"
-)
 public class PetController {
     @Autowired
     ClinicService clinicService;

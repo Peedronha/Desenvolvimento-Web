@@ -61,6 +61,8 @@ public class User {
     public Set<Role> getRoles() {
         return this.roles;
     }
+
+    @JsonIgnore
     public void setRoles(String roleName) {
         if(this.roles == null) {
             this.roles = new HashSet<>();

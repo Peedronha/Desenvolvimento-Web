@@ -1,7 +1,6 @@
 package br.pucbr.exemplo.usuario.controller;
 
 import br.pucbr.exemplo.usuario.entity.User;
-import br.pucbr.exemplo.usuario.entity.Vet;
 import br.pucbr.exemplo.usuario.service.UserService;
 import br.pucbr.exemplo.util.excecao.Excecao;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -11,9 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +36,7 @@ public class UserController {
     }
 
     //@PreAuthorize( "hasRole(@roles.ADMIN)" )
-    @PostMapping()
+    @PostMapping("/salvar")
     public ResponseEntity<?> save(@RequestBody User user) throws Excecao {
         HttpHeaders headers = new HttpHeaders();
         user.setPassword(encoder.encode(user.getPassword()));
@@ -64,25 +61,11 @@ public class UserController {
         }
     }
     //@PreAuthorize( "hasRole(@roles.ADMIN)" )
-    @Transactional
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Integer id) {
         userService.delete(id);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User>  updateUser(@RequestBody User user, @PathVariable("id") Integer id) throws Excecao {
-        User currentUser = this.userService.searchById(id);
-        if (currentUser == null) {
-            return new ResponseEntity<>(currentUser,HttpStatus.NOT_FOUND);
-        }
-        currentUser.setUsername(user.getUsername());
-        currentUser.setPassword(user.getPassword());
-        currentUser.setEnabled(user.getEnabled());
-
-        save(currentUser);
-        return new ResponseEntity<>(currentUser, HttpStatus.NO_CONTENT);
-    }
     @GetMapping("/validPassword")
     public  ResponseEntity<Boolean> checkPassword(@RequestParam String username, @RequestParam String password){
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package br.pucbr.exemplo.usuario.controller;
 
 import br.pucbr.exemplo.usuario.entity.Spec;
-import br.pucbr.exemplo.usuario.entity.Vet;
 import br.pucbr.exemplo.usuario.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,69 +32,65 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("api/vet")
-public class VetController{
+@RequestMapping("api/speciality")
+public class SpecController  {
     @Autowired
     ClinicService clinicService;
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @GetMapping
-    public ResponseEntity<List<Vet>> listVets() {
-        List<Vet> vets = new ArrayList<>();
-        vets.addAll(this.clinicService.findAllVets());
-        if (vets.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<Spec>> listSpec() {
+        List<Spec> specialties = new ArrayList<>();
+        specialties.addAll(this.clinicService.findAllSpecialties());
+        if (specialties.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(vets, HttpStatus.OK);
+        return new ResponseEntity<>(specialties, HttpStatus.OK);
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @GetMapping("/{id}")
-    public ResponseEntity<Vet> getVet(@PathVariable("id") Integer vetId)  {
-        Vet vet = this.clinicService.findVetById(vetId);
-        if (vet == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Spec> getSpecialty(@PathVariable("id") Integer specialtyId) {
+        Spec specialty = this.clinicService.findSpecialtyById(specialtyId);
+        if (specialty == null) {
+            return new ResponseEntity<Spec>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(vet, HttpStatus.OK);
+        return new ResponseEntity<Spec>(specialty, HttpStatus.OK);
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @PostMapping
-    public ResponseEntity<Vet> saveVet(@RequestBody Vet vet) {
+    public ResponseEntity<Spec> addSpecialty(@RequestBody Spec spec) {
         HttpHeaders headers = new HttpHeaders();
-        this.clinicService.saveVet(vet);
-        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/vets/{id}").buildAndExpand(vet.getId()).toUri());
-        return new ResponseEntity<>(vet, headers, HttpStatus.CREATED);
+        this.clinicService.saveSpecialty(spec);
+        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/speciality/{id}").buildAndExpand(spec.getId()).toUri());
+        return new ResponseEntity<Spec>(spec, headers, HttpStatus.CREATED);
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
-    @PutMapping
-    public ResponseEntity<Vet> updateVet(@RequestBody Vet vet)  {
-        Vet currentVet = this.clinicService.findVetById(vet.getId());
-        if (currentVet == null) {
+    @PostMapping("/{id}")
+    public ResponseEntity<Spec> updateSpecialty(@PathVariable("id") Integer specId) {
+        Spec currentSpec = this.clinicService.findSpecialtyById(specId);
+        if (currentSpec == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        currentVet.setFirst_name(vet.getFirst_name());
-        currentVet.setLast_name(vet.getLast_name());
-        currentVet.clearSpecialties();
-        for (Spec spec : vet.getSpecialties()) {
-            currentVet.addSpecialty(spec);
-        }
-        this.clinicService.saveVet(currentVet);
-        return new ResponseEntity<>(currentVet, HttpStatus.NO_CONTENT);
+        currentSpec.setName(currentSpec.getName());
+        this.clinicService.saveSpecialty(currentSpec);
+        return new ResponseEntity<>(currentSpec, HttpStatus.NO_CONTENT);
     }
 
     //@PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity<Vet> deleteVet(@PathVariable("id") Integer vetId) {
-        Vet vet = this.clinicService.findVetById(vetId);
-        if (vet == null) {
+    public ResponseEntity<Spec> deleteSpecialty(@PathVariable("id") Integer specId) {
+        Spec specialty = this.clinicService.findSpecialtyById(specId);
+        if (specialty == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        this.clinicService.deleteVet(vet);
+        this.clinicService.deleteSpecialty(specialty);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

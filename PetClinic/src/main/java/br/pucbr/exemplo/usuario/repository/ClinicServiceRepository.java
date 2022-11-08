@@ -47,6 +47,15 @@ public interface ClinicServiceRepository {
 	List<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
 
 
+    PetType findPetTypeById(int petTypeId);
+	List<PetType> findAllPetTypes() throws DataAccessException;
+	Collection<PetType> findPetTypes() throws DataAccessException;
+	void savePetType(PetType petType) throws DataAccessException;
+	void deletePetType(PetType petType) throws DataAccessException;
 
+	Spec findSpecialtyById(int specialtyId);
+	List<Spec> findAllSpecialties() throws DataAccessException;
+	void saveSpecialty(Spec specialty) throws DataAccessException;
+	void deleteSpecialty(Spec specialty) throws DataAccessException;
 
 }

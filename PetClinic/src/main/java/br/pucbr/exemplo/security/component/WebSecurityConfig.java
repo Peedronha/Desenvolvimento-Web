@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable().authorizeRequests()
-                .antMatchers("/public/**","/","/h2-console","/login","/api/**").permitAll()
+                .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
                 .antMatchers(HttpMethod.POST).permitAll()
                 .anyRequest().authenticated().and()
@@ -42,28 +42,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // filtra outras requisições para verificar a presença do JWT no header
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();
     }
-
+/*    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll();
+    }*/
 
     /*@Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 // ...
-                .and()
                 .formLogin()
-                .loginPage("/login.html")
+                .loginPage("/login")
                 .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/homepage.html", true)
                 .failureUrl("/login.html?error=true")
-                .failureHandler(authenticationFailureHandler())
+                //.failureHandler(authenticationFailureHandler())
                 .and()
                 .logout()
                 .logoutUrl("/perform_logout")
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessHandler(logoutSuccessHandler());
+                //.logoutSuccessHandler(logoutSuccessHandler());
     }*/
 
     @Override

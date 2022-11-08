@@ -1,6 +1,10 @@
 package br.pucbr.exemplo.usuario.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,8 +21,9 @@ public class Appointment {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "pet_id")
-    private Integer pet;
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
     public Integer getId() {
         return id;
@@ -44,11 +49,11 @@ public class Appointment {
         this.description = description;
     }
 
-    public Integer getPet() {
+    public Pet getPet() {
         return pet;
     }
 
-    public void setPet(Integer pet) {
+    public void setPet(Pet pet) {
         this.pet = pet;
     }
 }

@@ -1,28 +1,23 @@
 package br.pucbr.exemplo.usuario.controller;
 
 import br.pucbr.exemplo.usuario.entity.Owner;
+import br.pucbr.exemplo.usuario.entity.PetType;
 import br.pucbr.exemplo.usuario.service.ClinicService;
 import br.pucbr.exemplo.util.excecao.Excecao;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("api/owner")
-@SecurityScheme(
-        name = "Bearer",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer"
-)
 public class OwnerController {
     @Autowired
     ClinicService clinicService;
+
+
 
     @PostMapping
     public ResponseEntity<Owner> save(@RequestBody Owner owner) throws Excecao {
@@ -76,7 +71,7 @@ public class OwnerController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-    @Transactional
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Owner> delete(@PathVariable("id") Integer id) {
         Owner owner = this.clinicService.findOwnerById(id);
