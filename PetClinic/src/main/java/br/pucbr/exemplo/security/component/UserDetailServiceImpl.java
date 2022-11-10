@@ -1,7 +1,7 @@
 package br.pucbr.exemplo.security.component;
 
-import br.pucbr.exemplo.usuario.entity.User;
-import br.pucbr.exemplo.usuario.repository.UserRepository;
+import br.pucbr.exemplo.service.entity.User;
+import br.pucbr.exemplo.service.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

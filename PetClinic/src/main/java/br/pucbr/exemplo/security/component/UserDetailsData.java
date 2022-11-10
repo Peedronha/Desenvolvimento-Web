@@ -1,9 +1,7 @@
 package br.pucbr.exemplo.security.component;
 
-import br.pucbr.exemplo.usuario.entity.User;
-import org.springframework.context.annotation.Configuration;
+import br.pucbr.exemplo.service.entity.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 

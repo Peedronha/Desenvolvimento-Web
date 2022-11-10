@@ -35,6 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
                 .antMatchers(HttpMethod.POST).permitAll()
+                .antMatchers(HttpMethod.DELETE).permitAll()
+                .antMatchers(HttpMethod.PUT).permitAll()
                 .anyRequest().authenticated().and()
 
                 // filtra requisições de login
