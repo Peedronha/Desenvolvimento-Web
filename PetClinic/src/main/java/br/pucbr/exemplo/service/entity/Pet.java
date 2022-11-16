@@ -24,12 +24,6 @@ public class Pet{
         @JoinColumn(name = "type_id")
         private PetType type;
 
-        @ManyToOne
-        @JoinColumn(name = "owner_id", nullable = false)
-        private Owner owner;
-
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
-        private Set<Appointment> appointments;
 
         public Integer getPet_ID() {
             return id;
@@ -63,7 +57,7 @@ public class Pet{
             this.type = type;
         }
 
-        public Owner getOwner() {
+        /*public Owner getOwner() {
             return owner;
         }
 
@@ -71,14 +65,17 @@ public class Pet{
             this.owner = owner;
         }
 
-        public Set<Appointment> getAppointments() {
-            return appointments;
-        }
-
-        public Set<Appointment> setAppointment(Set<Appointment> appointments) {
+        public List<Appointment> getAppointment() {
             if (this.appointments == null) {
-                this.appointments = new HashSet<Appointment>();
+                this.appointments = new ArrayList<Appointment>();
             }
             return this.appointments;
         }
+
+        public void setAppointments(List<Appointment> appointments){
+            this.appointments = appointments;
+        }
+        public void addAppointment(Appointment appointments) {
+            this.appointments.add(appointments);
+        }*/
 }

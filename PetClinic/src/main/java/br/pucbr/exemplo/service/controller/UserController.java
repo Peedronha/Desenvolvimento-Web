@@ -1,7 +1,7 @@
 package br.pucbr.exemplo.service.controller;
 
-import br.pucbr.exemplo.service.entity.User;
-import br.pucbr.exemplo.service.service.UserService;
+import br.pucbr.exemplo.security.component.User;
+import br.pucbr.exemplo.security.component.UserDetailServiceImpl;
 import br.pucbr.exemplo.util.excecao.Excecao;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -27,7 +27,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    UserDetailServiceImpl userService;
 
     private final PasswordEncoder encoder;
 

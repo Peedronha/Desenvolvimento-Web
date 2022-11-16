@@ -57,5 +57,5 @@ public interface ClinicServiceRepository {
 	List<Spec> findAllSpecialties() throws DataAccessException;
 	void saveSpecialty(Spec specialty) throws DataAccessException;
 	void deleteSpecialty(Spec specialty) throws DataAccessException;
-
+	Owner findOwnerByPetId(Integer pet_id);
 }

@@ -1,7 +1,7 @@
 package br.pucbr.exemplo.security.filter;
 
 import br.pucbr.exemplo.security.component.UserDetailsData;
-import br.pucbr.exemplo.service.entity.User;
+import br.pucbr.exemplo.security.component.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,44 +55,4 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.getWriter().flush();
 
     }
-
-    /*private static final Logger logger = LoggerFactory.getLogger(JWTLoginFilter.class);
-
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
-        super(new AntPathRequestMatcher(url));
-        setAuthenticationManager(authManager);
-    }
-
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
-
-        String login = request.getParameter("login");
-        String senha = request.getParameter("senha");
-
-        Autenticacao credentials = new Autenticacao();
-        credentials.setLogin(login);
-        credentials.setSenha(senha);
-
-        return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
-                credentials.getLogin(), credentials.getSenha(), Collections.emptyList()));
-    }
-
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain filterChain, Authentication auth) throws IOException, ServletException {
-
-        CustomUser c = (CustomUser) auth.getPrincipal();
-
-        Autenticacao autenticacao = TokenAuthenticationService.getToken(response, auth.getName(), auth.getAuthorities(), c.getGuidUsuario());
-
-        ObjectMapper parser = new ObjectMapper();
-        String json = parser.writeValueAsString(autenticacao);
-
-        logger.info("Usuário " + autenticacao.getLogin() + " autorizado.");
-
-        response.addHeader("Content-Type", "application/json");
-        response.getWriter().println(json);
-    }
-*/
 }

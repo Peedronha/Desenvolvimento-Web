@@ -17,9 +17,11 @@ public class Appointment {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @Column(name = "owner")
+    private Integer owner;
+
+    @Column(name = "pet")
+    private Integer pet;
 
     public Integer getVet_id() {
         return vet_id;
@@ -54,11 +56,19 @@ public class Appointment {
         this.description = description;
     }
 
-    public Pet getPet() {
+    public Integer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+    }
+
+    public Integer getPet() {
         return pet;
     }
 
-    public void setPet(Pet pet) {
+    public void setPet(Integer pet) {
         this.pet = pet;
     }
 }

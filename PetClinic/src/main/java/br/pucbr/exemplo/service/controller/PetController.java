@@ -16,13 +16,11 @@ import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("api/pet")
+@RequestMapping("api/pets")
 public class PetController {
     @Autowired
     ClinicService clinicService;
 
-
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping("/{id}")
     public ResponseEntity<Pet> getPet(@PathVariable("id") Integer petId) {
         try {
@@ -33,25 +31,22 @@ public class PetController {
         }
     }
 
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping
     public ResponseEntity<List<Pet>> listPets() {
         List<Pet> pets = new ArrayList<>(this.clinicService.findAllPets());
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
-
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
-    @PostMapping
-    public ResponseEntity<Pet> savePet(@RequestBody Pet pet) {
+    @PostMapping("/{id}")
+    public ResponseEntity<Pet> savePet(@PathVariable Integer id , @RequestBody Pet pet) {
         try {
-            this.clinicService.savePet(pet);
+            if (this.clinicService.findOwnerById(id) != null) {this.clinicService.savePet(pet);}
             return new ResponseEntity<>(pet, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping("/{id}") ResponseEntity<Pet> update(@PathVariable("id") Integer petId){
+    @PutMapping("/{id}") ResponseEntity<Pet> update(@PathVariable("id") Integer petId){
         Pet currentPet = this.clinicService.findPetById(petId);
         if (currentPet == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,7 +65,7 @@ public class PetController {
         }
         return new ResponseEntity<>(appointment,HttpStatus.OK);
     }
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Pet> deletePet(@PathVariable("id") Integer petId) {

@@ -3,6 +3,8 @@ package br.pucbr.exemplo.service.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,9 +36,8 @@ public class Owner {
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Pet> pets;
-
+    @Column(name = "PET")
+    private Integer pet;
 
     public Integer getId() {
         return id;
@@ -86,11 +87,25 @@ public class Owner {
         this.telephone = telephone;
     }
 
-    public Set<Pet> getPets() {
-        return pets;
+    public Integer getPet() {
+        return pet;
     }
 
-    public void setPets(Set<Pet> pets) {
+    public void setPet(Integer pet) {
+        this.pet = pet;
+    }
+
+    /*public List<Pet> getPets() {
+        if (this.pets == null) {
+            this.pets = new ArrayList<Pet>();
+        }
+        return this.pets;
+    }
+
+    public void setPets(List<Pet> pets){
         this.pets = pets;
     }
+    public void addPets(Pet pet) {
+        this.pets.add(pet);
+    }*/
 }

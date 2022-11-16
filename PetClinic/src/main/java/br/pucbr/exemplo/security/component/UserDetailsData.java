@@ -1,6 +1,5 @@
 package br.pucbr.exemplo.security.component;
 
-import br.pucbr.exemplo.service.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package br.pucbr.exemplo.util.excecao;
+/*package br.pucbr.exemplo.util.excecao;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,5 +24,5 @@ public class FormatarExcecao {
     }
 }
 
-
+*/
 

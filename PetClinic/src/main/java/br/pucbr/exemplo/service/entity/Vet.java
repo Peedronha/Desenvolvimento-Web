@@ -71,6 +71,7 @@ public class Vet {
         this.specialties = specialties;
     }
 
+
     @XmlElement
     public List<Spec> getSpecialties() {
         List<Spec> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());

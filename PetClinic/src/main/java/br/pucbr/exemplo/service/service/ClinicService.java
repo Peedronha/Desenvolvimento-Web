@@ -219,6 +219,19 @@ public class ClinicService implements ClinicServiceRepository {
 		}
 		return owner;
 	}
+	@Override
+	@Transactional(readOnly = true)
+	public Owner findOwnerByPetId(Integer pet_id) throws DataAccessException {
+		Owner owner = null;
+		try {
+			em.createQuery("SELECT DISTINCT owner  FROM Owner owner  WHERE owner.pet =: pet_id")
+					.setParameter("pet_id", pet_id)
+					.getResultList();
+		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+			return null;
+		}
+		return owner;
+	}
 
 	@Override
 	@Transactional(readOnly = true)

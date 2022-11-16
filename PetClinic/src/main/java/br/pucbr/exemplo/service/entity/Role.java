@@ -1,5 +1,6 @@
 package br.pucbr.exemplo.service.entity;
 
+import br.pucbr.exemplo.security.component.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

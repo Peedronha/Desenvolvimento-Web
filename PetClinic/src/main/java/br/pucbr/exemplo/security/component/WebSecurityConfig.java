@@ -4,6 +4,7 @@ import br.pucbr.exemplo.security.filter.JWTAuthenticationFilter;
 import br.pucbr.exemplo.security.filter.JWTValidationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

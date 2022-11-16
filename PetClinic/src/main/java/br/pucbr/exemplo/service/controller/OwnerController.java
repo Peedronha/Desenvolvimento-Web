@@ -28,7 +28,7 @@ public class OwnerController {
     @GetMapping
     public ResponseEntity<List<Owner>> listAll() {
        List<Owner> owners = clinicService.findAllOwners();
-        return new ResponseEntity<>(owners, HttpStatus.OK);
+       return new ResponseEntity<>(owners, HttpStatus.OK);
     }
 
     @GetMapping("/{lastName}")
@@ -55,7 +55,18 @@ public class OwnerController {
         }
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("petId/{id}")
+    public ResponseEntity<Owner> searchByPetId(@PathVariable("id") Integer id) {
+        try {
+            Owner owner = clinicService.findOwnerByPetId(id);
+            return new ResponseEntity<>(owner, HttpStatus.OK);
+        } catch (NoSuchElementException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PutMapping("/{id}")
     public ResponseEntity<Owner> updateOwnerAddress(@PathVariable("id") Integer id, String address){
         Owner owner = clinicService.findOwnerById(id);
         if (owner == null){

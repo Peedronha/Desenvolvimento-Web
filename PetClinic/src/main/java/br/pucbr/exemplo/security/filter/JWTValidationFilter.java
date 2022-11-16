@@ -23,7 +23,6 @@ public class JWTValidationFilter extends BasicAuthenticationFilter {
         super(authenticationManager);
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
@@ -50,7 +49,6 @@ public class JWTValidationFilter extends BasicAuthenticationFilter {
         if (user == null){
             return null;
         }
-
         return new UsernamePasswordAuthenticationToken(user,new ArrayList<>(), new ArrayList<>());
     }
 }

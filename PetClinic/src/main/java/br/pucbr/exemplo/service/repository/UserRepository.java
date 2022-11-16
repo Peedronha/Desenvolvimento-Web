@@ -1,6 +1,6 @@
 package br.pucbr.exemplo.service.repository;
 
-import br.pucbr.exemplo.service.entity.User;
+import br.pucbr.exemplo.security.component.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

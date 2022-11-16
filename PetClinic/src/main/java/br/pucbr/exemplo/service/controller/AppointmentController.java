@@ -33,7 +33,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("api/appointment")
+@RequestMapping("api/visits")
 public class AppointmentController {
     @Autowired
     ClinicService clinicService;
