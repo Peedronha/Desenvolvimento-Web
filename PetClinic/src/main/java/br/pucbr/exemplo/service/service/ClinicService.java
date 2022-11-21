@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClinicService implements ClinicServiceRepository {
@@ -249,7 +250,6 @@ public class ClinicService implements ClinicServiceRepository {
 	@Transactional
 	public void savePet(Pet pet) throws DataAccessException {
 		petRepository.save(pet);
-
 	}
 
 	@Override
@@ -284,7 +284,7 @@ public class ClinicService implements ClinicServiceRepository {
 	@Transactional(readOnly = true)
 	public List findVisitsByPetId(int petId) {
 
-		return em.createQuery("SELECT v FROM Appointment v where v.pet.id= :id")
+		return em.createQuery("SELECT v FROM Appointment v where v.pet.id =:id")
 				.setParameter("id", petId)
 				.getResultList();
 	}

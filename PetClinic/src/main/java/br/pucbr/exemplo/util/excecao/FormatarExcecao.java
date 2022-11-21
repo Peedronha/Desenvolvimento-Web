@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class FormatarExcecao {
 
-    @ExceptionHandler({Excecao.class, RuntimeException.class})
+    /*@ExceptionHandler({Excecao.class, RuntimeException.class})
     public ResponseEntity<Object> sqlError(Excecao ex) {
         String retorno = "{" +
                 "\"codigo\":\""+ex.getCodigo()+"\"," +
@@ -23,6 +23,6 @@ public class FormatarExcecao {
         return new ResponseEntity<Object>(retorno, headers, HttpStatus.BAD_REQUEST);
     }
 }
-
 */
+
 

@@ -24,12 +24,11 @@ public class Pet{
         @JoinColumn(name = "type_id")
         private PetType type;
 
-
-        public Integer getPet_ID() {
+        public Integer getId() {
             return id;
         }
 
-        public void setPet_ID(Integer id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 

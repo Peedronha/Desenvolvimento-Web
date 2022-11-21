@@ -1,6 +1,7 @@
 
 package br.pucbr.exemplo.service.controller;
 
+import br.pucbr.exemplo.service.entity.Owner;
 import br.pucbr.exemplo.service.entity.Pet;
 import br.pucbr.exemplo.service.entity.Appointment;
 import br.pucbr.exemplo.service.service.ClinicService;
@@ -21,8 +22,9 @@ public class PetController {
     @Autowired
     ClinicService clinicService;
 
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping("/{id}")
-    public ResponseEntity<Pet> getPet(@PathVariable("id") Integer petId) {
+    public ResponseEntity<Pet> getPetById(@PathVariable("id") Integer petId) {
         try {
            Pet pet = clinicService.findPetById(petId);
             return new ResponseEntity<>(pet, HttpStatus.OK);
@@ -31,22 +33,24 @@ public class PetController {
         }
     }
 
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping
     public ResponseEntity<List<Pet>> listPets() {
         List<Pet> pets = new ArrayList<>(this.clinicService.findAllPets());
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Pet> savePet(@PathVariable Integer id , @RequestBody Pet pet) {
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    @PostMapping
+    public ResponseEntity<Pet> savePet(@RequestBody Pet pet) {
         try {
-            if (this.clinicService.findOwnerById(id) != null) {this.clinicService.savePet(pet);}
+            this.clinicService.savePet(pet);
             return new ResponseEntity<>(pet, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    @PutMapping("/{id}") ResponseEntity<Pet> update(@PathVariable("id") Integer petId){
+    @PostMapping("/{id}") ResponseEntity<Pet> update(@PathVariable("id") Integer petId){
         Pet currentPet = this.clinicService.findPetById(petId);
         if (currentPet == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,7 +60,7 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-    @GetMapping("/{pet_id}")
+    @GetMapping("visit/{pet_id}")
     public ResponseEntity<List<Appointment>> visitByPet(@PathVariable("pet_id") Integer petId){
         List<Appointment> appointment = new ArrayList<>(this.clinicService.findVisitsByPetId(petId));
         Pet pet = this.clinicService.findPetById(petId);
@@ -65,7 +69,7 @@ public class PetController {
         }
         return new ResponseEntity<>(appointment,HttpStatus.OK);
     }
-
+    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Pet> deletePet(@PathVariable("id") Integer petId) {

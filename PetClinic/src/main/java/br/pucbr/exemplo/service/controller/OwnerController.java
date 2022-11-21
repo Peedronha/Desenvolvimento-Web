@@ -25,6 +25,21 @@ public class OwnerController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @PutMapping("/{owner_id}/{pet_id}")
+    public ResponseEntity<Owner> updateOwnerPet(@PathVariable("owner_id") Integer owner_id,
+                                                @PathVariable("pet_id") Integer pet_id,
+                                                @RequestBody Owner ow){
+        Owner owner = clinicService.findOwnerById(owner_id);
+        if (owner == null){
+            return new ResponseEntity<>(owner,HttpStatus.NOT_FOUND);
+        }else {
+            owner.setPet(pet_id);
+            clinicService.saveOwner(owner);
+            return new ResponseEntity<>(owner,HttpStatus.OK);
+        }
+    }
     @GetMapping
     public ResponseEntity<List<Owner>> listAll() {
        List<Owner> owners = clinicService.findAllOwners();
