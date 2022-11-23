@@ -19,6 +19,7 @@ import br.pucbr.exemplo.service.entity.*;
 import org.springframework.dao.DataAccessException;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public interface ClinicServiceRepository {
@@ -58,4 +59,6 @@ public interface ClinicServiceRepository {
 	void saveSpecialty(Spec specialty) throws DataAccessException;
 	void deleteSpecialty(Spec specialty) throws DataAccessException;
 	Owner findOwnerByPetId(Integer pet_id);
+
+    boolean findVisitByDate(Date date);
 }

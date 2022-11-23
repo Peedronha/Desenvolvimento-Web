@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -212,7 +213,7 @@ public class ClinicService implements ClinicServiceRepository {
 	@Override
 	@Transactional(readOnly = true)
 	public Owner findOwnerById(int id) throws DataAccessException {
-		Owner owner = null;
+		Owner owner;
 		try {
 			owner = ownerRepository.findById(id).get();
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
@@ -225,7 +226,7 @@ public class ClinicService implements ClinicServiceRepository {
 	public Owner findOwnerByPetId(Integer pet_id) throws DataAccessException {
 		Owner owner = null;
 		try {
-			em.createQuery("SELECT DISTINCT owner  FROM Owner owner  WHERE owner.pet =: pet_id")
+			owner = (Owner) em.createQuery("SELECT  owner  FROM Owner owner  WHERE owner.pet =: pet_id")
 					.setParameter("pet_id", pet_id)
 					.getResultList();
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
@@ -234,7 +235,22 @@ public class ClinicService implements ClinicServiceRepository {
 		return owner;
 	}
 
-	@Override
+    @Override
+    public boolean findVisitByDate(Date date) {
+		try {
+			Appointment appointment =(Appointment) em.createQuery("SELECT appointment  FROM Appointment appointment  " +
+							"WHERE appointment.date =: date")
+					.setParameter("date", date);
+			if(appointment.getDate() != date){
+				return false;
+			}
+			return true;
+		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+			return false;
+		}
+    }
+
+    @Override
 	@Transactional(readOnly = true)
 	public Pet findPetById(int id) throws DataAccessException {
 		Pet pet = null;
@@ -284,7 +300,7 @@ public class ClinicService implements ClinicServiceRepository {
 	@Transactional(readOnly = true)
 	public List findVisitsByPetId(int petId) {
 
-		return em.createQuery("SELECT v FROM Appointment v where v.pet.id =:id")
+		return em.createQuery("SELECT v FROM Appointment v where v.pet =:id")
 				.setParameter("id", petId)
 				.getResultList();
 	}
@@ -294,6 +310,4 @@ public class ClinicService implements ClinicServiceRepository {
 			.setParameter("name",newPetType.getName())
 			.setParameter("id",petTypeId).executeUpdate();
 	}
-
-
 }

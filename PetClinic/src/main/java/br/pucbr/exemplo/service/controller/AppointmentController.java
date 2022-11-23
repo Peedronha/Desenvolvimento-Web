@@ -38,7 +38,6 @@ public class AppointmentController {
     @Autowired
     ClinicService clinicService;
 
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping
     public ResponseEntity<List<Appointment>> listVisits() {
         List<Appointment> appointments = new ArrayList<>(this.clinicService.findAllVisits());
@@ -48,7 +47,6 @@ public class AppointmentController {
         return new ResponseEntity<>(new ArrayList<> (appointments), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @GetMapping("/{id}")
     public ResponseEntity<Appointment> getVisit(@PathVariable("id") Integer visitId) {
         Appointment appointment = this.clinicService.findVisitById(visitId);
@@ -58,17 +56,19 @@ public class AppointmentController {
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @PostMapping
     public ResponseEntity<Appointment> addVisit(@RequestBody Appointment appointment) {
-        HttpHeaders headers = new HttpHeaders();
-        this.clinicService.saveVisit(appointment);
-        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/visits/{id}").buildAndExpand(appointment.getId()).toUri());
-        return new ResponseEntity<>(appointment, headers, HttpStatus.CREATED);
+
+        if(this.clinicService.findVisitByDate(appointment.getDate())) {
+            this.clinicService.saveVisit(appointment);
+            return new ResponseEntity<>(appointment, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
     }
 
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Appointment> updateVisit(@PathVariable("id") Integer id, @RequestBody Appointment appointment) {
         Appointment currentAppointment = this.clinicService.findVisitById(id);
         if (currentAppointment == null) {
@@ -78,7 +78,6 @@ public class AppointmentController {
         return new ResponseEntity<>(currentAppointment, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Appointment> deleteVisit(@PathVariable("id") Integer visitId) {
