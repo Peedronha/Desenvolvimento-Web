@@ -1,20 +1,23 @@
 package br.pucbr.exemplo.security.component;
 
-import br.pucbr.exemplo.service.repository.UserRepository;
-import br.pucbr.exemplo.util.excecao.Excecao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -22,57 +25,66 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserDetailServiceImpl.class);
 
     private JdbcTemplate jdbcTemplate;
-    private final UserRepository userRepository;
-
-    EntityManager em;
 
     @Autowired
-    public UserDetailServiceImpl(JdbcTemplate jdbcTemplate, UserRepository userRepository) {
+    public UserDetailServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.userRepository = userRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
+        try {
+            UserDetails u = new CustomUser("admin",
+                    "$2a$12$Bvd65HT/xM4JZHdTnbtjZOcpJ4XMGybT1n5476cf/SqRcRg0fBNSe",
+                    true,
+                    true,
+                    true,
+                    true,
+                    new ArrayList<>(),
+                    null);
 
-        Optional<User> user = userRepository.findByUsername(username);
-        if(user.isEmpty()){
-            throw new UsernameNotFoundException("Usuário [" + username +"] não encontrado");
+            logger.info("Username: " + userName + " encontrado.");
+
+            return u;
+        } catch (Exception ex) {
+            logger.error("Username: " + userName + " não econtrado na base. Acesso negado. ");
+            throw new UsernameNotFoundException(userName);
         }
-        return new UserDetailsData(user);
+
     }
 
+    private CustomUser getCustomUser(String userName) {
 
-    public User save(User user) throws Excecao {
-        if (user.getUsername().equals("") || user.getUsername().length() > 300) {
-            throw new Excecao("ERR001","O dados dos usuário estão incorretos.");
+        logger.info("getCustomUser: " + userName + ".");
+
+        CustomUser customUser = jdbcTemplate.queryForObject(
+                "select email, senha, guidusuario from usuario where email=?", new Object[] { userName },
+                new UserRowMapper());
+
+        if (customUser != null) {
+
+            customUser = new CustomUser(customUser.getUsername(), customUser.getPassword(), customUser.isEnabled(),
+                    customUser.isAccountNonExpired(), customUser.isCredentialsNonExpired(),
+                    customUser.isAccountNonLocked(), getUserRoles(customUser), customUser.getGuidUsuario());
         }
 
-        /*for (Role r:user.getRoles()) {
-            if (!r.getName().startsWith("ROLE_")){
-                r.setName("ROLE_" + r.getName());
-            }
-            if (r.getUser() == null){
-                r.setUser(user);
-            }
-        }*/
+        return customUser;
 
-        return userRepository.save(user);
     }
 
-    public List<User> list() {
-        return userRepository.findAll();
+    private class UserRowMapper implements RowMapper<CustomUser> {
+        @Override
+        public CustomUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new CustomUser(rs.getString("email"), rs.getString("senha"), true, true, true, true,
+                    Collections.emptyList(), rs.getInt("guidusuario"));
+
+        }
     }
 
-    public User searchById(Integer id) {
-        return userRepository.findById(id).get();
-    }
-
-    public Optional<User> findByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
-    public void delete(Integer id) {
-        userRepository.deleteById(id);
+    private List<GrantedAuthority> getUserRoles(CustomUser user) {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        return authorities;
     }
 
 }

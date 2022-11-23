@@ -1,4 +1,4 @@
-/*package br.pucbr.exemplo.util.excecao;
+package br.pucbr.exemplo.util.excecao;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class FormatarExcecao {
 
-    /*@ExceptionHandler({Excecao.class, RuntimeException.class})
-    public ResponseEntity<Object> sqlError(Excecao ex) {
+    @ExceptionHandler({ExcecaoExemplo.class, RuntimeException.class})
+    public ResponseEntity<Object> sqlError(ExcecaoExemplo ex) {
         String retorno = "{" +
                 "\"codigo\":\""+ex.getCodigo()+"\"," +
                 "\"mensagem\":\""+ex.getMensagem()+"\"" +
@@ -23,6 +23,6 @@ public class FormatarExcecao {
         return new ResponseEntity<Object>(retorno, headers, HttpStatus.BAD_REQUEST);
     }
 }
-*/
+
 
 

@@ -1,8 +1,8 @@
 package br.pucbr.exemplo.util.excecao;
 
-public class Excecao extends Exception {
+public class ExcecaoExemplo extends Exception {
 
-    public Excecao(String codigo, String mensagem) {
+    public ExcecaoExemplo(String codigo, String mensagem) {
         super(mensagem);
         this.codigo = codigo;
         this.mensagem = mensagem;

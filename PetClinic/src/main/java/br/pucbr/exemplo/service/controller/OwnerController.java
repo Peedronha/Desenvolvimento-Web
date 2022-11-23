@@ -2,7 +2,7 @@ package br.pucbr.exemplo.service.controller;
 
 import br.pucbr.exemplo.service.entity.Owner;
 import br.pucbr.exemplo.service.service.ClinicService;
-import br.pucbr.exemplo.util.excecao.Excecao;
+import br.pucbr.exemplo.util.excecao.ExcecaoExemplo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class OwnerController {
     @Autowired
     ClinicService clinicService;
     @PostMapping
-    public ResponseEntity<Owner> save(@RequestBody Owner owner) throws Excecao {
+    public ResponseEntity<Owner> save(@RequestBody Owner owner) throws ExcecaoExemplo {
         try {
             clinicService.saveOwner(owner);
             return new ResponseEntity<>(owner, HttpStatus.CREATED);

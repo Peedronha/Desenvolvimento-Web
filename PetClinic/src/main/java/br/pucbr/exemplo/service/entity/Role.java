@@ -1,6 +1,6 @@
 package br.pucbr.exemplo.service.entity;
 
-import br.pucbr.exemplo.security.component.User;
+import br.pucbr.exemplo.security.user.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -26,16 +26,16 @@ public class Role {
     @ManyToOne
     @JoinColumn(name = "username")
     @JsonIgnore
-    private User user;
+    private Usuario user;
 
     @Column( name = "role")
     private String name;
 
-    public User getUser() {
+    public Usuario getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Usuario user) {
         this.user = user;
     }
 
