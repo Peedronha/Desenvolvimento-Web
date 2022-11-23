@@ -23,15 +23,18 @@ public class Appointment {
     @Column(name = "pet")
     private Integer pet;
 
-    public Integer getVet_id() {
-        return vet_id;
+    @Column(name = "vet")
+    private Integer vet;
+
+
+    public Integer getVet() {
+        return vet;
     }
 
-    public void setVet_id(Integer vet_id) {
-        this.vet_id = vet_id;
+    public void setVet(Integer vet) {
+        this.vet = vet;
     }
 
-    private Integer vet_id;
     public Integer getId() {
         return id;
     }
@@ -71,4 +74,6 @@ public class Appointment {
     public void setPet(Integer pet) {
         this.pet = pet;
     }
+
+
 }
